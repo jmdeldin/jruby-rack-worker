@@ -5,6 +5,8 @@ module Resque
   # Thread-safe worker usable with JRuby, adapts most of the methods designed
   # to be used in a process per worker env to behave safely in concurrent env.
   class JRubyWorker < Worker
+    # Support Resque ≥ 2.2.0 (VERSION)
+    RESQUE_VERSION = defined?(Resque::VERSION) ? Resque::VERSION : Resque::Version
 
     begin
       require 'jruby'
@@ -323,7 +325,7 @@ module Resque
       if string.nil?
         @procline ||= nil # act as a reader if no string given
       else # avoid setting $0
-        log! @procline = "resque-#{Resque::Version}: #{string}"
+        log! @procline = "resque-#{RESQUE_VERSION}: #{string}"
       end
     end
 
